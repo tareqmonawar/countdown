@@ -1,76 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Countdown Timer</title>
+    <title>131 JCSC Countdown</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: white;
+            text-align: center;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-<style>
+        h1 {
+            font-size: clamp(30px, 5vw, 50px);
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
-body{
-background: linear-gradient(135deg,#1e3c72,#2a5298);
-font-family: Arial, sans-serif;
-color:white;
-text-align:center;
-margin-top:120px;
-}
+        #timer {
+            font-size: clamp(20px, 3.5vw, 45px);
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            line-height: 1.5;
+            margin-bottom: 40px; /* Space before the GIF */
+        }
 
-h1{
-font-size:50px;
-letter-spacing:2px;
-margin-bottom:40px;
-}
+        #gif-container img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-#timer{
-font-size:60px;
-font-weight:bold;
-background:rgba(255,255,255,0.1);
-display:inline-block;
-padding:30px 50px;
-border-radius:15px;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
-}
+        .time-up {
+            color: #ff4b2b;
+            font-size: 50px;
+            animation: blink 1s infinite;
+        }
 
-.label{
-font-size:18px;
-margin-top:10px;
-}
-
-</style>
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>End of 131 JCSC</h1>
+    <h1>End of 131 JCSC</h1>
 
-<div id="timer"></div>
+    <div id="timer">Loading Countdown...</div>
 
-<script>
+    <div id="gif-container">
+        <img src="https://gonerdify.com/blog/wp-content/uploads/2018/08/Gif-1-Running-Away.gif" alt="CSTI Running">
+    </div>
 
-var countDownDate = new Date("June 09, 2026 14:30:00").getTime();
+    <script>
+        // Set the date: June 09, 2026 at 14:30
+        var countDownDate = new Date("June 09, 2026 14:30:00").getTime();
 
-var x = setInterval(function() {
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
 
-var now = new Date().getTime();
-var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-var hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-var seconds = Math.floor((distance % (1000*60)) / 1000);
+            // Displaying full words for time units
+            document.getElementById("timer").innerHTML = 
+                days + " Days " + hours + " Hours " + 
+                minutes + " Minutes " + seconds + " Seconds";
 
-document.getElementById("timer").innerHTML =
-days + " Days  " +
-hours + " Hours  " +
-minutes + " Minutes  " +
-seconds + " Seconds";
-
-if (distance < 0) {
-clearInterval(x);
-document.getElementById("timer").innerHTML = "TIME UP";
-}
-
-},1000);
-
-</script>
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "<span class='time-up'>MISSION ACCOMPLISHED</span>";
+                document.getElementById("gif-container").style.display = "none";
+            }
+        }, 1000);
+    </script>
 
 </body>
 </html>
